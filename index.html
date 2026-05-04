@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Илиян Андонов — Бъдещ Програмист</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS Variables ─────────────────────────────────────── */
+    :root {
+      --bg:          #050a0f;
+      --bg2:         #0b1520;
+      --surface:     #0f1e2d;
+      --border:      #1a3044;
+      --accent:      #00e5ff;
+      --accent2:     #7b61ff;
+      --accent3:     #39ff14;
+      --text:        #e8f4ff;
+      --text-muted:  #6b90b0;
+      --glow:        0 0 20px rgba(0,229,255,.25);
+      --glow-strong: 0 0 40px rgba(0,229,255,.45);
+      --radius:      12px;
+      --font-head:   'Syne', sans-serif;
+      --font-mono:   'Space Mono', monospace;
+      --font-body:   'DM Sans', sans-serif;
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Animated Grid Background ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Noise Overlay ─────────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ─── Layout ────────────────────────────────────────────── */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section { padding: 80px 0; }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5,10,15,.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: .85rem;
+      color: var(--accent);
+      letter-spacing: .05em;
+    }
+
+    .nav-logo span { color: var(--text-muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .25s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 100px 0 80px;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .hero-orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,229,255,.12), transparent 70%);
+      top: -100px; right: -150px;
+    }
+
+    .hero-orb-2 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(123,97,255,.12), transparent 70%);
+      bottom: 0; left: -100px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--accent3);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: rgba(57,255,20,.08);
+      border: 1px solid rgba(57,255,20,.2);
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeSlideUp .8s ease both;
+    }
+
+    .hero-tag::before {
+      content: '●';
+      animation: pulse 2s infinite;
+      font-size: .5rem;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .2; }
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -.02em;
+      animation: fadeSlideUp .8s .1s ease both;
+    }
+
+    .hero-name .accent { color: var(--accent); }
+
+    .hero-subtitle {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 12px;
+      animation: fadeSlideUp .8s .2s ease both;
+    }
+
+    .hero-desc {
+      max-width: 520px;
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 22px;
+      animation: fadeSlideUp .8s .3s ease both;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 28px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+      animation: fadeSlideUp .8s .4s ease both;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .meta-value {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    /* ─── Progress Section ──────────────────────────────────── */
+    #progress { border-top: 1px solid var(--border); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -.01em;
+      margin-bottom: 48px;
+    }
+
+    /* Main Progress Card */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .progress-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .progress-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .progress-pct {
+      font-family: var(--font-mono);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .progress-pct sup {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* The Bar */
+    .bar-track {
+      width: 100%;
+      height: 14px;
+      background: var(--bg2);
+      border-radius: 100px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      box-shadow: 0 0 16px rgba(0,229,255,.5);
+      transition: width 1.4s cubic-bezier(.25,.46,.45,.94);
+      position: relative;
+      /* JS will set width via data-progress */
+      width: 1%;
+    }
+
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      right: -1px; top: 0; bottom: 0;
+      width: 4px;
+      background: white;
+      border-radius: 100px;
+      box-shadow: 0 0 8px white;
+    }
+
+    .bar-milestone {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--text-muted);
+    }
+
+    /* Skill Bars */
+    .skills-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .skill-item {}
+
+    .skill-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .skill-name {
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: .9rem;
+    }
+
+    .skill-pct {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--accent);
+    }
+
+    .skill-bar {
+      height: 8px;
+      background: var(--bg2);
+      border-radius: 100px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1.6s cubic-bezier(.25,.46,.45,.94);
+    }
+
+    /* ─── Goals Section ─────────────────────────────────────── */
+    #goals { border-top: 1px solid var(--border); }
+
+    .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .goal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .goal-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .goal-icon {
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .goal-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .goal-desc {
+      font-size: .85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .goal-status {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .status-future  { background: rgba(123,97,255,.12); color: var(--accent2); border: 1px solid rgba(123,97,255,.25); }
+    .status-active  { background: rgba(0,229,255,.1); color: var(--accent); border: 1px solid rgba(0,229,255,.25); }
+    .status-dream   { background: rgba(57,255,20,.08); color: var(--accent3); border: 1px solid rgba(57,255,20,.2); }
+
+    /* ─── Timeline ──────────────────────────────────────────── */
+    #journey { border-top: 1px solid var(--border); }
+
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 0 0 40px 24px;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -7px; top: 5px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: var(--bg);
+      box-shadow: 0 0 10px rgba(0,229,255,.4);
+    }
+
+    .tl-item.future::before {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--text-muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tl-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .tl-desc {
+      font-size: .88rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Quote ─────────────────────────────────────────────── */
+    .quote-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 28px 32px;
+      margin: 0;
+      position: relative;
+    }
+
+    .quote-text {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      font-weight: 600;
+      line-height: 1.6;
+      font-style: italic;
+      color: var(--text);
+    }
+
+    .quote-author {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+    }
+
+    /* ─── Stats Bar ─────────────────────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .stat-item {
+      flex: 1;
+      padding: 24px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-lbl {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+    }
+
+    .footer-text .accent { color: var(--accent); }
+
+    /* ─── Animations ────────────────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Cursor Blink ──────────────────────────────────────── */
+    .cursor {
+      display: inline-block;
+      width: 3px; height: 1em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1.1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .stats-row { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .progress-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-logo">ilia<span>.dev</span></span>
+      <ul class="nav-links">
+        <li><a href="#hero">Начало</a></li>
+        <li><a href="#progress">Напредък</a></li>
+        <li><a href="#goals">Цели</a></li>
+        <li><a href="#journey">Път</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="container">
+      <div class="hero-tag">Активен ученик — Стралджа, 2025</div>
+      <h1 class="hero-name">
+        Илиян<br>
+        <span class="accent">Андонов</span><span class="cursor"></span>
+      </h1>
+      <p class="hero-subtitle">3-ти клас → Бъдещ Програмист & AI Инженер</p>
+      <p class="hero-desc">
+        Докато другите деца играят, Илиян мечтае за код, алгоритми и интелигентни автоматизации.
+        Пътят е дълъг, но всеки велик програмист е започнал от нулата.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Град</span>
+          <span class="meta-value">Стралджа</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Клас</span>
+          <span class="meta-value">3-ти</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Мисия</span>
+          <span class="meta-value">AI Автоматизации</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Статус</span>
+          <span class="meta-value" style="color:var(--accent3)">● На старта</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROGRESS ──────────────────────────────────────────── -->
+  <section id="progress">
+    <div class="container">
+      <p class="section-label reveal">// напредък</p>
+      <h2 class="section-title reveal">Пътят към Мечтата</h2>
+
+      <!-- Stats Row -->
+      <div class="stats-row reveal">
+        <div class="stat-item">
+          <span class="stat-num" id="daysCount">0</span>
+          <div class="stat-lbl">Дни в учене</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">1</span>
+          <div class="stat-lbl">Програмен език</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">∞</span>
+          <div class="stat-lbl">Любопитство</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">💯</span>
+          <div class="stat-lbl">Мотивация</div>
+        </div>
+      </div>
+
+      <!-- Main Progress Bar -->
+      <div class="progress-card reveal">
+        <div class="progress-header">
+          <div>
+            <div class="progress-title">Обща Готовност за Кариера</div>
+            <div style="font-size:.82rem; color:var(--text-muted); margin-top:4px;">
+              Програмиране · AI · Автоматизации
+            </div>
+          </div>
+          <div class="progress-pct">
+            <span id="mainPctNum">1</span><sup>%</sup>
+          </div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="mainBar" data-progress="1"></div>
+        </div>
+        <div class="bar-milestone">
+          <span>Старт</span>
+          <span>Основи</span>
+          <span>Проект</span>
+          <span>Junior Dev</span>
+          <span>AI Engineer</span>
+        </div>
+      </div>
+
+      <!-- Skill Bars -->
+      <div class="skills-grid reveal">
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">🧠 Логическо мислене</span>
+            <span class="skill-pct" id="s1-pct">5%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s1" data-progress="5"
+                 style="background: linear-gradient(90deg, #7b61ff, #00e5ff);"></div>
+          </div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">💻 Програмиране (Python)</span>
+            <span class="skill-pct" id="s2-pct">2%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s2" data-progress="2"
+                 style="background: linear-gradient(90deg, #00e5ff, #39ff14);"></div>
+          </div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">🤖 AI & Машинно обучение</span>
+            <span class="skill-pct" id="s3-pct">1%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s3" data-progress="1"
+                 style="background: linear-gradient(90deg, #ff6b6b, #ffd93d);"></div>
+          </div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">⚡ Автоматизации</span>
+            <span class="skill-pct" id="s4-pct">1%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s4" data-progress="1"
+                 style="background: linear-gradient(90deg, #39ff14, #00e5ff);"></div>
+          </div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">🌐 Уеб разработка</span>
+            <span class="skill-pct" id="s5-pct">1%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s5" data-progress="1"
+                 style="background: linear-gradient(90deg, #ff9a56, #ff6b9d);"></div>
+          </div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head">
+            <span class="skill-name">📐 Математика</span>
+            <span class="skill-pct" id="s6-pct">15%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill" id="s6" data-progress="15"
+                 style="background: linear-gradient(90deg, #a78bfa, #7b61ff);"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GOALS ─────────────────────────────────────────────── -->
+  <section id="goals">
+    <div class="container">
+      <p class="section-label reveal">// цели</p>
+      <h2 class="section-title reveal">Следващи Стъпки</h2>
+      <div class="goals-grid">
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">🐍</span>
+          <div class="goal-name">Научи Python</div>
+          <p class="goal-desc">Първият програмен език — прост, мощен, използван в AI навсякъде.</p>
+          <span class="goal-status status-active">В прогрес</span>
+        </div>
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">🤖</span>
+          <div class="goal-name">AI Автоматизации</div>
+          <p class="goal-desc">Създаване на скриптове, които работят вместо хората с помощта на AI.</p>
+          <span class="goal-status status-future">Предстои</span>
+        </div>
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">🚀</span>
+          <div class="goal-name">Първи Проект</div>
+          <p class="goal-desc">Изграждане на реално приложение — малко, но работещо.</p>
+          <span class="goal-status status-future">Предстои</span>
+        </div>
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">💡</span>
+          <div class="goal-name">Open Source</div>
+          <p class="goal-desc">Принос в проекти, от които се ползват хора по целия свят.</p>
+          <span class="goal-status status-dream">Мечта</span>
+        </div>
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">🏢</span>
+          <div class="goal-name">Tech Компания</div>
+          <p class="goal-desc">Работа в иновативна компания, решаваща реални проблеми с код.</p>
+          <span class="goal-status status-dream">Мечта</span>
+        </div>
+
+        <div class="goal-card reveal">
+          <span class="goal-icon">🌍</span>
+          <div class="goal-name">Промени Света</div>
+          <p class="goal-desc">Технологиите, направени с добри намерения, могат да помогнат на милиони.</p>
+          <span class="goal-status status-dream">Мечта</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── JOURNEY ────────────────────────────────────────────── -->
+  <section id="journey">
+    <div class="container">
+      <p class="section-label reveal">// journey</p>
+      <h2 class="section-title reveal">Пътят на Кода</h2>
+
+      <div class="timeline reveal">
+
+        <div class="tl-item">
+          <div class="tl-date">2025 — Сега</div>
+          <div class="tl-title">Искрата е запалена ✨</div>
+          <p class="tl-desc">Илиян открива програмирането и AI. Любопитството е по-силно от всичко.</p>
+        </div>
+
+        <div class="tl-item future">
+          <div class="tl-date">2026</div>
+          <div class="tl-title">Основи на Python</div>
+          <p class="tl-desc">Първи стъпки в кодирането — променливи, условия, функции.</p>
+        </div>
+
+        <div class="tl-item future">
+          <div class="tl-date">2027</div>
+          <div class="tl-title">Първи проект</div>
+          <p class="tl-desc">Малко приложение или скрипт, показан на семейството с гордост.</p>
+        </div>
+
+        <div class="tl-item future">
+          <div class="tl-date">2029</div>
+          <div class="tl-title">AI & Автоматизации</div>
+          <p class="tl-desc">Използване на AI API-та за изграждане на полезни инструменти.</p>
+        </div>
+
+        <div class="tl-item future">
+          <div class="tl-date">2033+</div>
+          <div class="tl-title">Professional Dev 🎯</div>
+          <p class="tl-desc">Работа по реални продукти. Принос в технологичното бъдеще на България.</p>
+        </div>
+
+      </div>
+
+      <!-- Quote -->
+      <blockquote class="quote-block reveal" style="margin-top:48px;">
+        <p class="quote-text">
+          "Всеки експерт е бил начинаещ.
+          Всеки велик програмист е написал своя първи ред код
+          с нуждата да разбере — не само да изпълни."
+        </p>
+        <cite class="quote-author">— За Илиян, с вяра в неговото бъдеще</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <p class="footer-text">
+        © 2025 <span class="accent">Илиян Андонов</span> ·
+        Стралджа, България ·
+        <span class="accent">v0.01</span> — само началото
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       JavaScript — готов за разширяване
+  ══════════════════════════════════════════════════════════ -->
+  <script>
+    /* ─────────────────────────────────────────────────────────
+       1. КОНФИГУРАЦИЯ
+       Промени стойностите тук, за да актуализираш напредъка.
+    ───────────────────────────────────────────────────────── */
+    const CONFIG = {
+      mainProgress : 1,       // % обща готовност (0-100)
+      skills: {
+        s1: 5,                // Логическо мислене
+        s2: 2,                // Python
+        s3: 1,                // AI & ML
+        s4: 1,                // Автоматизации
+        s5: 1,                // Уеб
+        s6: 15,               // Математика
+      },
+      startDate: new Date('2025-01-01'), // начална дата на учене
+    };
+
+    /* ─────────────────────────────────────────────────────────
+       2. ПОМОЩНИ ФУНКЦИИ
+    ───────────────────────────────────────────────────────── */
+
+    /**
+     * Анимира числото от 0 до target стойност.
+     * @param {HTMLElement} el  - елементът, чийто textContent ще се анимира
+     * @param {number}      to  - крайна стойност
+     * @param {number}     [duration=1200] - мс
+     */
+    function animateCounter(el, to, duration = 1200) {
+      const start     = performance.now();
+      const from      = 0;
+      function step(now) {
+        const t       = Math.min((now - start) / duration, 1);
+        const eased   = 1 - Math.pow(1 - t, 3);     // ease-out cubic
+        el.textContent = Math.round(from + eased * (to - from));
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    /**
+     * Изчислява брой дни от дадена дата до днес.
+     * @param {Date} since
+     * @returns {number}
+     */
+    function daysSince(since) {
+      const ms = Date.now() - since.getTime();
+      return Math.max(0, Math.floor(ms / 86_400_000));
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       3. INTERSECTION OBSERVER — reveal анимации
+    ───────────────────────────────────────────────────────── */
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ─────────────────────────────────────────────────────────
+       4. ПРОГРЕС БАРОВЕ — задействат се след reveal
+    ───────────────────────────────────────────────────────── */
+    function initProgressBars() {
+      // Главен бар
+      const mainBar = document.getElementById('mainBar');
+      const mainNum = document.getElementById('mainPctNum');
+
+      const mainObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          mainBar.style.width = CONFIG.mainProgress + '%';
+          animateCounter(mainNum, CONFIG.mainProgress);
+          mainObserver.disconnect();
+        }
+      }, { threshold: 0.3 });
+
+      mainObserver.observe(mainBar);
+
+      // Skill барове
+      Object.entries(CONFIG.skills).forEach(([id, pct]) => {
+        const fill  = document.getElementById(id);
+        const label = document.getElementById(id + '-pct');
+        if (!fill) return;
+
+        const obs = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            fill.style.width  = pct + '%';
+            if (label) label.textContent = pct + '%';
+            obs.disconnect();
+          }
+        }, { threshold: 0.3 });
+
+        obs.observe(fill);
+      });
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       5. ДАТИ / БРОЯЧ
+    ───────────────────────────────────────────────────────── */
+    function initStats() {
+      const daysEl = document.getElementById('daysCount');
+      if (daysEl) {
+        const days = daysSince(CONFIG.startDate);
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) {
+            animateCounter(daysEl, days, 1500);
+            obs.disconnect();
+          }
+        }, { threshold: 0.3 });
+        obs.observe(daysEl);
+      }
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       6. ИНИЦИАЛИЗАЦИЯ
+    ───────────────────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      initProgressBars();
+      initStats();
+    });
+
+    /* ─────────────────────────────────────────────────────────
+       7. PLACEHOLDER ЗА БЪДЕЩА ЛОГИКА
+       Добави тук: localStorage за запазване на напредък,
+       форма за актуализиране, API извиквания и т.н.
+    ───────────────────────────────────────────────────────── */
+    // TODO: loadProgressFromStorage();
+    // TODO: initUpdateForm();
+    // TODO: connectToBackend();
+  </script>
+</body>
+</html>
